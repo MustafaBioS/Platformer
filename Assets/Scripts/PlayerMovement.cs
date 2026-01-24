@@ -3,8 +3,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D body;
-    [SerializeField] float Speed = 8;
-    [SerializeField] float JumpForce = 3.5f;
+    [SerializeField] float Speed = 6;
+    [SerializeField] float JumpForce = 12;
+    private Animator anim;
+    [SerializeField] bool grounded;
+    float horizontalInput;
 
     private void Awake()
     {
@@ -14,23 +17,42 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false; 
     }
 
     void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
+        horizontalInput = Input.GetAxis("Horizontal");
         body.linearVelocity = new Vector2(Input.GetAxis("Horizontal") * Speed, body.linearVelocity.y);
 
         if (horizontalInput > 0.01f)
-            transform.localScale = new Vector3(6, 6, 6);
+            transform.localScale = new Vector3(8, 8, 8);
         else if (horizontalInput < -0.01f)
-            transform.localScale = new Vector3(-6, 6, 6);
+            transform.localScale = new Vector3(-8, 8, 8);
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && grounded)
+        {
             body.linearVelocity = new Vector2(body.linearVelocity.x, JumpForce);
+            grounded = false;
+        }
+
 
         anim.SetBool("Run", horizontalInput != 0);
 
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            grounded = true;
+        }
+    }
+
+    public bool canAttack()
+    {
+        return horizontalInput == 0 && grounded;
     }
 }
