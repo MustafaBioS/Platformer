@@ -4,10 +4,11 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D body;
     [SerializeField] float Speed = 6;
-    [SerializeField] float JumpForce = 12;
+    [SerializeField] float JumpForce = 10;
     private Animator anim;
     [SerializeField] bool grounded;
     float horizontalInput;
+    private float scaleNum = 6;
 
     private void Awake()
     {
@@ -27,9 +28,9 @@ public class PlayerMovement : MonoBehaviour
         body.linearVelocity = new Vector2(Input.GetAxis("Horizontal") * Speed, body.linearVelocity.y);
 
         if (horizontalInput > 0.01f)
-            transform.localScale = new Vector3(8, 8, 8);
+            transform.localScale = new Vector3(scaleNum, scaleNum, scaleNum);
         else if (horizontalInput < -0.01f)
-            transform.localScale = new Vector3(-8, 8, 8);
+            transform.localScale = new Vector3(-scaleNum, scaleNum, scaleNum);
 
         if (Input.GetKey(KeyCode.Space) && grounded)
         {
