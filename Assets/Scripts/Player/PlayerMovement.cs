@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour
     float horizontalInput;
     private float scaleNum = 6;
 
+    [SerializeField] GameObject fadeIn;
+    [SerializeField] GameObject fadeOut;
+
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -19,7 +22,9 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false; 
+        Cursor.visible = false;
+
+        fadeIn.SetActive(true);
     }
 
     void Update()

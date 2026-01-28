@@ -1,13 +1,16 @@
 using UnityEngine;
 
-public class CameraFollowWithLimit : MonoBehaviour
+public class CamLimit : MonoBehaviour
 {
     public Transform player;
     public Vector3 offset;
     public float minX = -10f;
 
+    Camera cam;
+
     void Start()
     {
+        cam = GetComponent<Camera>();
         offset = transform.position - player.position;
     }
 
@@ -17,7 +20,9 @@ public class CameraFollowWithLimit : MonoBehaviour
 
         Vector3 targetPos = player.position + offset;
 
-        targetPos.x = Mathf.Max(targetPos.x, minX);
+        float camHalfWidth = cam.orthographicSize * cam.aspect;
+
+        targetPos.x = Mathf.Max(targetPos.x, minX + camHalfWidth);
 
         transform.position = targetPos;
     }
